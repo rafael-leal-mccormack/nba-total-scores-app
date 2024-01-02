@@ -1,14 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 // For local usage
-// import puppeteer, { Browser, Page } from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 
 // For remote usage
-import puppeteer, { Browser, Page } from "puppeteer-core";
+// import puppeteer, { Browser, Page } from "puppeteer-core";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(
-    req.url as string,
-    `http://${req.headers.host}`
+    req.url as string
   );
   const url = statMuseUrl;
   const team1 = searchParams.get("team1");
