@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
     browser = await puppeteer.launch({ headless: false });
   } else {
     browser = await puppeteer.connect({
-      browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=30000&headless=false&blockAds`,
+      browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=60000&headless=false&blockAds`,
     });
   }
 
