@@ -5,7 +5,11 @@ import puppeteer, { Browser, Page } from "puppeteer";
 // For remote usage
 // import puppeteer, { Browser, Page } from "puppeteer-core";
 
-export async function GET(req: NextRequest) {
+export const config = {
+  runtime: 'edge',
+}
+
+export default async function handler(req: NextRequest) {
   const { searchParams } = new URL(
     req.url as string
   );
