@@ -6,6 +6,8 @@ import puppeteer, { Browser, Page } from "puppeteer";
 // import puppeteer, { Browser, Page } from "puppeteer-core";
 
 export const runtime = "edge"
+export const maxDuration = 25;
+
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(
