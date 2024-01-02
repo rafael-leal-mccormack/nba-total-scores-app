@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-12">
       {loading ? (
-        <div className="flex justify-center items-center absolute h-full w-full left-0 top-0">
+        <div className="flex justify-center items-center absolute h-full w-full left-0 top-0 z-20">
           <Spinner></Spinner>
         </div>
       ) : (
