@@ -41,17 +41,14 @@ export async function GET(req: NextRequest) {
 
   // For remote usage
   let browser: Browser;
-  // if (process.env.DEV) {
-  //   // For local usage
-  //   browser = await puppeteer.launch({ headless: false });
-  // } else {
-  //   browser = await puppeteer.connect({
-  //     browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=60000&headless=false&blockAds`,
-  //   });
-  // }
-
-  browser = await puppeteer.launch({ headless: false });
-
+  if (process.env.DEV) {
+    // For local usage
+    browser = await puppeteer.launch({ headless: false });
+  } else {
+    browser = await puppeteer.connect({
+      browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=60000&headless=false&blockAds`,
+    });
+  }
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
