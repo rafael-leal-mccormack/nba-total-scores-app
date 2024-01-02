@@ -31,8 +31,8 @@ export default function Home() {
         ""
       )}
 
-      <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-between font-mono text-sm flex">
-        <div className="flex flex-col items-center">
+      <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex">
+        <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
             <Logo name={team1Logo}></Logo>
           </div>
