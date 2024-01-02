@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 // For remote usage
 import puppeteer, { Browser, Page } from "puppeteer-core";
 
-export const runtime = "edge"
+// export const runtime = "edge"
 export const maxDuration = 25;
 
 
