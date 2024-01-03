@@ -1,8 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
 import Table from "../components/table";
-import TOR from "../components/logos/tor";
-import ATL from "../components/logos/atl";
 import Logo from "../components/Logo";
 import { NBAAbbreviation } from "../utils/util";
 import Spinner from "../components/Spinner";
@@ -20,6 +18,36 @@ export default function Home() {
   const [team1Logo, setTeam1Logo] = useState<NBAAbbreviation>(null);
   const [team2Logo, setTeam2Logo] = useState<NBAAbbreviation>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  function getApis() {
+    const matchSpecificStats = fetch(
+      `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`
+    );
+    const team1Stats = fetch(
+      `/api/team1?team1=${team1Ref.current?.value}`
+    );
+    const team2Stats = fetch(
+      `/api/team2?team2=${team2Ref.current?.value}`
+    );
+
+    Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
+      createStats(data[0], data[1], data[2]);
+    })
+  }
+
+  function createStats(matchStats: Response, team1Stats: Response, team2Stats: Response) {
+    Promise.all([matchStats.json(), team1Stats.json(), team2Stats.json()]).then((data) => {
+      const results: Stats = {
+        team1: data[1],
+        team2: data[2],
+        match: data[0]
+      };
+      setLoading(false);
+      setTeam1Logo((results?.match[0] as any)["TM"]);
+      setTeam2Logo((results?.match[0] as any)["OPP"]);
+      setStats(results);
+    })
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-12">
@@ -56,14 +84,7 @@ export default function Home() {
       <button
         onClick={async () => {
           setLoading(true);
-          const res = await fetch(
-            `/api?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`
-          );
-          const results: Stats = await res.json();
-          setLoading(false);
-          setTeam1Logo((results?.match[0] as any)["TM"]);
-          setTeam2Logo((results?.match[0] as any)["OPP"]);
-          setStats(results);
+          getApis();
         }}
         className="text-white pt-2 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700"
       >
