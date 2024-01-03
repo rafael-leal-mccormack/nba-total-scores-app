@@ -22,10 +22,17 @@ export default function Home() {
 
   function getApis() {
     const matchSpecificStats = fetch(
-      `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`
+      `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`,
+      {
+        cache: "force-cache",
+      }
     );
-    const team1Stats = fetch(`/api/team1?team1=${team1Ref.current?.value}`);
-    const team2Stats = fetch(`/api/team2?team2=${team2Ref.current?.value}`);
+    const team1Stats = fetch(`/api/team1?team1=${team1Ref.current?.value}`, {
+      cache: 'force-cache'
+    });
+    const team2Stats = fetch(`/api/team2?team2=${team2Ref.current?.value}`, {
+      cache: 'force-cache'
+    });
 
     Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
       createStats(data[0], data[1], data[2]);
@@ -61,7 +68,7 @@ export default function Home() {
         setLoading(false);
       }
     } else {
-      console.log('in progress...')
+      console.log("in progress...");
     }
   }, [loading]);
 
@@ -74,8 +81,14 @@ export default function Home() {
       ) : (
         ""
       )}
-        <p className="text-sm">This website displays the recent performance of NBA teams in their last 5 games against one another.</p> 
-        <p className="text-sm">The first two tables show the last 5 games of each team respectively, and the third table shows the last 5 games between Team 1 and Team 2.</p>
+      <p className="text-sm">
+        This website displays the recent performance of NBA teams in their last
+        5 games against one another.
+      </p>
+      <p className="text-sm">
+        The first two tables show the last 5 games of each team respectively,
+        and the third table shows the last 5 games between Team 1 and Team 2.
+      </p>
       <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex gap-8">
         <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
