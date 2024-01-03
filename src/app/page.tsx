@@ -74,8 +74,8 @@ export default function Home() {
       ) : (
         ""
       )}
-        <p>This website displays the recent performance of NBA teams in their last 5 games against one another.</p> 
-        <p>The first two tables show the last 5 games of each team respectively, and the third table shows the last 5 games between Team 1 and Team 2.</p>
+        <p className="text-sm">This website displays the recent performance of NBA teams in their last 5 games against one another.</p> 
+        <p className="text-sm">The first two tables show the last 5 games of each team respectively, and the third table shows the last 5 games between Team 1 and Team 2.</p>
       <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex gap-8">
         <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
