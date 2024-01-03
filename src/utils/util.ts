@@ -1,5 +1,5 @@
 export type LogoProps = {
-  size: string
+  size?: string
 }
 export type NBAAbbreviation =
   | 'ATL'
