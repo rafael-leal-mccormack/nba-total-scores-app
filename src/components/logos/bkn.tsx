@@ -7,8 +7,8 @@ const BKN = (props: PropsWithRef<LogoProps>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
+      width={size ?? 100}
+      height={size ?? 100}
       viewBox="0 0 150 150"
       fill="none"
       fillRule="evenodd"
@@ -34,14 +34,6 @@ const BKN = (props: PropsWithRef<LogoProps>) => {
       />
     </svg>
   );
-};
-
-BKN.propTypes = {
-  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-};
-
-BKN.defaultProps = {
-  size: '100'
 };
 
 export default BKN;

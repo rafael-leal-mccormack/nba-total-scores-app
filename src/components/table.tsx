@@ -38,7 +38,6 @@ export default function Table(props: PropsWithChildren<Props>) {
               {headings.map((heading, index) => {
                 let resultsAvg = ''
                 if (heading === 'RESULT' && statIndex === 5) {
-                  console.log(props.teamStats)
                   resultsAvg += getAverageForResults(props.teamStats!)
                 }
                 return (

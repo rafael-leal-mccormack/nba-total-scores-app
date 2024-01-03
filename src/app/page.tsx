@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Table from "../components/table";
 import Logo from "../components/Logo";
 import { NBAAbbreviation } from "../utils/util";
@@ -24,31 +24,46 @@ export default function Home() {
     const matchSpecificStats = fetch(
       `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`
     );
-    const team1Stats = fetch(
-      `/api/team1?team1=${team1Ref.current?.value}`
-    );
-    const team2Stats = fetch(
-      `/api/team2?team2=${team2Ref.current?.value}`
-    );
+    const team1Stats = fetch(`/api/team1?team1=${team1Ref.current?.value}`);
+    const team2Stats = fetch(`/api/team2?team2=${team2Ref.current?.value}`);
 
     Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
       createStats(data[0], data[1], data[2]);
-    })
+    });
   }
 
-  function createStats(matchStats: Response, team1Stats: Response, team2Stats: Response) {
-    Promise.all([matchStats.json(), team1Stats.json(), team2Stats.json()]).then((data) => {
-      const results: Stats = {
-        team1: data[1],
-        team2: data[2],
-        match: data[0]
-      };
-      setLoading(false);
-      setTeam1Logo((results?.match[0] as any)["TM"]);
-      setTeam2Logo((results?.match[0] as any)["OPP"]);
-      setStats(results);
-    })
+  function createStats(
+    matchStats: Response,
+    team1Stats: Response,
+    team2Stats: Response
+  ) {
+    Promise.all([matchStats.json(), team1Stats.json(), team2Stats.json()]).then(
+      (data) => {
+        const results: Stats = {
+          team1: data[1],
+          team2: data[2],
+          match: data[0],
+        };
+        setLoading(false);
+        setTeam1Logo((results?.match[0] as any)["TM"]);
+        setTeam2Logo((results?.match[0] as any)["OPP"]);
+        setStats(results);
+      }
+    );
   }
+
+  useEffect(() => {
+    if (loading) {
+      try {
+        getApis();
+      } catch (err) {
+        console.error("Puppeteer call failed", err);
+        setLoading(false);
+      }
+    } else {
+      console.log('in progress...')
+    }
+  }, [loading]);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-12">
@@ -59,7 +74,8 @@ export default function Home() {
       ) : (
         ""
       )}
-
+        <p>This website displays the recent performance of NBA teams in their last 5 games against one another.</p> 
+        <p>The first two tables show the last 5 games of each team respectively, and the third table shows the last 5 games between Team 1 and Team 2.</p>
       <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex gap-8">
         <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
@@ -85,12 +101,6 @@ export default function Home() {
       <button
         onClick={async () => {
           setLoading(true);
-          try {
-            getApis();
-          } catch (err) {
-            console.error('Puppeteer call failed', err)
-            setLoading(false)
-          }
         }}
         className="text-white mt-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700"
       >

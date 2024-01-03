@@ -8,8 +8,8 @@ const OKC = (props: PropsWithRef<LogoProps>) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={size}
-      height={size}
+      width={size ?? 100}
+      height={size ?? 100}
       viewBox="0 0 150 150"
       fill="none"
       fillRule="evenodd"
@@ -74,14 +74,6 @@ const OKC = (props: PropsWithRef<LogoProps>) => {
       </g>
     </svg>
   );
-};
-
-OKC.propTypes = {
-  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
-
-OKC.defaultProps = {
-  size: '100',
 };
 
 export default OKC;
