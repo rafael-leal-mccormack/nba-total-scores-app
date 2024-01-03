@@ -43,9 +43,11 @@ export async function GET(req: NextRequest) {
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
-  await page.goto(statMuseUrl);
+  const searchQuery = `${team2} last 5 games`
 
-  console.log("Finding team specific stats...");
+  await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
+
+  console.log("Finding team2 specific stats...");
   const team2Stats = await findTeamStats(page, team2);
 
   //end browser instance
@@ -54,29 +56,9 @@ export async function GET(req: NextRequest) {
 }
 
 const statMuseUrl = "https://www.statmuse.com/";
-const topSearchBar = '[name="question[query]"]';
+const nbaPath = "nba/ask/"
 
 async function findTeamStats(page: Page, team: string) {
-  console.log("Searching for last 5 games");
-  // look for last 5 games of a team
-  await page.waitForSelector(topSearchBar);
-
-  await page.evaluate(() => {
-    const input: HTMLInputElement = document.querySelector(
-      '[name="question[query]"]'
-    )!;
-    input.value = "";
-  });
-
-  console.log("clicking and typing in top bar");
-  await page.click(topSearchBar);
-  await page.keyboard.type(`${team} last 5 games`);
-  console.log("navigating to results");
-  await Promise.all([
-    page.click('input[aria-label="Search"]'),
-    page.waitForNavigation(),
-  ]);
-
   console.log("waiting for table to show");
   await page.waitForSelector("div.relative table");
 
