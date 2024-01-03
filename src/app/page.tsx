@@ -10,6 +10,7 @@ type Stats = {
   team2: Object[];
   match: Object[];
 } | null;
+
 export default function Home() {
   const team1Ref = useRef<HTMLInputElement>(null);
   const team2Ref = useRef<HTMLInputElement>(null);
@@ -59,7 +60,7 @@ export default function Home() {
         ""
       )}
 
-      <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex">
+      <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex gap-8">
         <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
             <Logo name={team1Logo}></Logo>
@@ -84,9 +85,14 @@ export default function Home() {
       <button
         onClick={async () => {
           setLoading(true);
-          getApis();
+          try {
+            getApis();
+          } catch (err) {
+            console.error('Puppeteer call failed', err)
+            setLoading(false)
+          }
         }}
-        className="text-white pt-2 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700"
+        className="text-white mt-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700"
       >
         Compare
       </button>
