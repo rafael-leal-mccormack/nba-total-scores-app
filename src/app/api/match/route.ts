@@ -6,7 +6,7 @@ import puppeteer, { Browser, Page } from "puppeteer";
 // import puppeteer, { Browser, Page } from "puppeteer-core";
 
 // export const runtime = "edge"
-export const maxDuration = 10;
+export const maxDuration = 30;
 
 
 export async function GET(req: NextRequest) {
