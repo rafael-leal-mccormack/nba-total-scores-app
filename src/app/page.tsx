@@ -136,7 +136,7 @@ export default function Home() {
         Compare
       </button>
       <h2 className="mt-4">Team history stats</h2>
-      <div className="z-10 flex-wrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
+      <div className="z-10 flex-wrap xl:flex-nowrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
         <div className="overflow-scroll">
           <Table teamStats={stats?.team1}></Table>
         </div>
