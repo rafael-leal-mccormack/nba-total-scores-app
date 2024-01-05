@@ -27,23 +27,23 @@ export default function Home() {
         cache: "force-cache",
         next: {
           // 16 hours * 60 minutes * 60 seconds
-          revalidate: 57600
-        }
+          revalidate: 57600,
+        },
       }
     );
     const team1Stats = fetch(`/api/team1?team1=${team1Ref.current?.value}`, {
-      cache: 'force-cache',
+      cache: "force-cache",
       next: {
         // 16 hours * 60 minutes * 60 seconds
-        revalidate: 57600
-      }
+        revalidate: 57600,
+      },
     });
     const team2Stats = fetch(`/api/team2?team2=${team2Ref.current?.value}`, {
-      cache: 'force-cache',
+      cache: "force-cache",
       next: {
         // 16 hours * 60 minutes * 60 seconds
-        revalidate: 57600
-      }
+        revalidate: 57600,
+      },
     });
 
     Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
@@ -93,6 +93,10 @@ export default function Home() {
       ) : (
         ""
       )}
+      <a target="_blank" href="https://www.buymeacoffee.com/rafael_leal">
+
+      <div className="text-white mt-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700">🍺 Buy me a beer!</div>
+      </a>
       <p className="text-sm">
         This website displays the recent performance of NBA teams in their last
         5 games against one another.

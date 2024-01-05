@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
-  const searchQuery = `${team1} last 5 games`
+  const searchQuery = `${team1}, last 5 games`
 
   await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
 
