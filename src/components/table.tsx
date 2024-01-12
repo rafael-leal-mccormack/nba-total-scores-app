@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { getAverageForResults } from "../utils/util";
 
 type Props = {
   teamStats: Object[] | undefined;
@@ -53,7 +54,7 @@ export default function Table(props: PropsWithChildren<Props>) {
                     key={JSON.stringify(teamStat) + heading}
                   >
                     {(teamStat as any)[heading]}
-                    {resultsAvg}
+                    {/* {resultsAvg} */}
                   </td>
                 );
               })}
@@ -66,20 +67,3 @@ export default function Table(props: PropsWithChildren<Props>) {
 }
 
 
-function parseResultStringToNum(res: string) {
-  const splitStr = res.replace('L', '').replace('W', '').trim().split('-');
-  const team1Score = Number.parseInt(splitStr[0])
-  const team2Score = Number.parseInt(splitStr[1])
-
-  return team1Score + team2Score
-}
-
-function getAverageForResults(teamScores: any[]) {
-  // first 5 are the games
-  let total = 0
-  for(let i = 0; i < 5; i++) {
-    total += parseResultStringToNum(teamScores[i]['RESULT'])
-  }
-
-  return total / 5
-}

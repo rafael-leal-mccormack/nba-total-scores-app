@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
 
   // For remote usage
   let browser: Browser;
+
   if (process.env.DEV) {
     // For local usage
     browser = await puppeteer.launch({ headless: false });
@@ -40,19 +41,24 @@ export async function GET(req: NextRequest) {
       browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=60000&headless=false&blockAds`,
     });
   }
-
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1920, height: 1080 });
-  const searchQuery = `${team2}, last 5 games`
-
-  await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
-
-  console.log("Finding team2 specific stats...");
-  const team2Stats = await findTeamStats(page, team2);
-
-  //end browser instance
-  await browser.close();
-  return Response.json(team2Stats);
+  
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
+    const searchQuery = `${team2}, last 5 games`
+  
+    await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
+  
+    console.log("Finding team2 specific stats...");
+    const team2Stats = await findTeamStats(page, team2);
+  
+    //end browser instance
+    await browser.close();
+    return Response.json(team2Stats);
+  } catch {
+    browser.close();
+  }
+  
 }
 
 const statMuseUrl = "https://www.statmuse.com/";

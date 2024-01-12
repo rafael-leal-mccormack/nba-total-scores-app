@@ -41,18 +41,26 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1920, height: 1080 });
-  const searchQuery = `${team1}, last 5 games`
+  try {
 
-  await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
+    const searchQuery = `${team1}, last 5 games`
+  
+    await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
+  
+    console.log("Finding team1 specific stats...");
+    const team1Stats = await findTeamStats(page, team1);
+  
+    //end browser instance
+    await browser.close();
+    return Response.json(team1Stats);
+  } catch {
+    await browser.close();
+  } finally {
+    await browser.close();
+  }
 
-  console.log("Finding team1 specific stats...");
-  const team1Stats = await findTeamStats(page, team1);
-
-  //end browser instance
-  await browser.close();
-  return Response.json(team1Stats);
 }
 
 const statMuseUrl = "https://www.statmuse.com/";

@@ -2,13 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import Table from "../components/table";
 import Logo from "../components/Logo";
-import { NBAAbbreviation } from "../utils/util";
+import { NBAAbbreviation, getAverageForResults } from "../utils/util";
 import Spinner from "../components/Spinner";
 
 type Stats = {
-  team1: Object[];
-  team2: Object[];
-  match: Object[];
+  team1: { [key: string]: string }[];
+  team2: { [key: string]: string }[];
+  match: { [key: string]: string }[];
 } | null;
 
 export default function Home() {
@@ -47,7 +47,9 @@ export default function Home() {
     });
 
     Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
+      console.log('----', data)
       createStats(data[0], data[1], data[2]);
+      setLoading(false);
     });
   }
 
@@ -63,6 +65,13 @@ export default function Home() {
           team2: data[2],
           match: data[0],
         };
+        const team1avg = getAverageForResults(results.team1);
+        results.team1[5]["RESULT"] = team1avg.toString();
+        const team2avg = getAverageForResults(results.team2);
+        results.team2[5]["RESULT"] = team2avg.toString();
+        const matchAvg = getAverageForResults(results.match);
+        results.match[5]["RESULT"] = matchAvg.toString();
+
         setLoading(false);
         setTeam1Logo((results?.match[0] as any)["TM"]);
         setTeam2Logo((results?.match[0] as any)["OPP"]);
@@ -77,7 +86,6 @@ export default function Home() {
         getApis();
       } catch (err) {
         console.error("Puppeteer call failed", err);
-        setLoading(false);
       }
     } else {
       console.log("in progress...");
@@ -85,7 +93,7 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-12">
+    <main className="flex min-h-screen flex-col items-center p-4 lg:p-12">
       {loading ? (
         <div className="flex justify-center items-center absolute h-full w-full left-0 top-0 z-20">
           <Spinner></Spinner>
@@ -94,17 +102,20 @@ export default function Home() {
         ""
       )}
       <a target="_blank" href="https://www.buymeacoffee.com/rafael_leal">
-
-      <div className="text-white mt-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700">🍺 Buy me a beer!</div>
+        <div className="text-white mt-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700">
+          🍺 Buy me a beer!
+        </div>
       </a>
-      <p className="text-sm">
-        This website displays the recent performance of NBA teams in their last
-        5 games against one another.
-      </p>
-      <p className="text-sm">
-        The first two tables show the last 5 games of each team respectively,
-        and the third table shows the last 5 games between Team 1 and Team 2.
-      </p>
+      <div className="text-center md:text-left">
+        <p className="text-sm">
+          This website displays the recent performance of NBA teams in their
+          last 5 games against one another.
+        </p>
+        <p className="text-sm">
+          The first two tables show the last 5 games of each team respectively,
+          and the third table shows the last 5 games between Team 1 and Team 2.
+        </p>
+      </div>
       <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex gap-8">
         <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
@@ -135,7 +146,29 @@ export default function Home() {
       >
         Compare
       </button>
-      <h2 className="mt-4">Team history stats</h2>
+
+      <h2 className="my-4 text-lg font-bold">Total Points Overview</h2>
+      <div className="flex justify-between w-full">
+        <div className="flex flex-col w-full text-center">
+          <h3 className="underline">Team 1 Average</h3>
+          <div className="text-5xl">
+            {stats?.team1 ? stats.team1[5]['PTS'] : ''}
+          </div>
+        </div>
+        <div className="flex flex-col w-full text-center">
+          <h3 className="underline">Team 2 Average</h3>
+          <div className="text-5xl">
+            {stats?.team2 ? stats.team2[5]['PTS'] : ''}
+          </div>
+        </div>
+      </div>
+      <div className="text-center mt-4 md:mt-10">
+          <h3 className="underline">Match Average</h3>
+          <div className="text-5xl">
+            {stats?.match ? stats.match[5]['RESULT'] : ''}
+          </div>
+        </div>
+      <h2 className="my-4 text-lg font-bold">Team Stats History</h2>
       <div className="z-10 flex-wrap xl:flex-nowrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
         <div className="overflow-scroll">
           <Table teamStats={stats?.team1}></Table>
@@ -145,7 +178,7 @@ export default function Home() {
         </div>
       </div>
 
-      <h2>Match stats</h2>
+      <h2 className="my-4 text-lg font-bold">Match Stats History</h2>
       <div className="z-10 w-full items-center justify-between font-mono text-sm flex py-4">
         <div className="w-full flex items-center">
           <div className="w-full overflow-scroll">
