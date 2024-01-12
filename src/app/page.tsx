@@ -47,7 +47,7 @@ export default function Home() {
     });
 
     Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
-      console.log('----', data)
+      console.log("----", data);
       createStats(data[0], data[1], data[2]);
       setLoading(false);
     });
@@ -106,7 +106,7 @@ export default function Home() {
           🍺 Buy me a beer!
         </div>
       </a>
-      <div className="text-center md:text-left">
+      <div className="text-center">
         <p className="text-sm">
           This website displays the recent performance of NBA teams in their
           last 5 games against one another.
@@ -147,45 +147,47 @@ export default function Home() {
         Compare
       </button>
 
-      <h2 className="my-4 text-lg font-bold">Total Points Overview</h2>
-      <div className="flex justify-between w-full">
-        <div className="flex flex-col w-full text-center">
-          <h3 className="underline">Team 1 Average</h3>
-          <div className="text-5xl">
-            {stats?.team1 ? stats.team1[5]['PTS'] : ''}
+        <div className={`w-full ${stats ? '' : 'hidden'}`}>
+          <h2 className="my-4 text-lg font-bold text-center">Total Points Overview</h2>
+          <div className="flex justify-between w-full">
+            <div className="flex flex-col w-full text-center">
+              <h3 className="underline">Team 1 Average</h3>
+              <div className="text-5xl">
+                {stats?.team1 ? stats.team1[5]["PTS"] : ""}
+              </div>
+            </div>
+            <div className="flex flex-col w-full text-center">
+              <h3 className="underline">Team 2 Average</h3>
+              <div className="text-5xl">
+                {stats?.team2 ? stats.team2[5]["PTS"] : ""}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col w-full text-center">
-          <h3 className="underline">Team 2 Average</h3>
-          <div className="text-5xl">
-            {stats?.team2 ? stats.team2[5]['PTS'] : ''}
+          <div className="text-center mt-4 md:mt-10">
+            <h3 className="underline">Match Average</h3>
+            <div className="text-5xl">
+              {stats?.match ? stats.match[5]["RESULT"] : ""}
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="text-center mt-4 md:mt-10">
-          <h3 className="underline">Match Average</h3>
-          <div className="text-5xl">
-            {stats?.match ? stats.match[5]['RESULT'] : ''}
+          <h2 className="my-4 text-lg font-bold text-center">Team Stats History</h2>
+          <div className="z-10 flex-wrap xl:flex-nowrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
+            <div className="overflow-scroll">
+              <Table teamStats={stats?.team1}></Table>
+            </div>
+            <div className="overflow-scroll">
+              <Table teamStats={stats?.team2}></Table>
+            </div>
           </div>
-        </div>
-      <h2 className="my-4 text-lg font-bold">Team Stats History</h2>
-      <div className="z-10 flex-wrap xl:flex-nowrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
-        <div className="overflow-scroll">
-          <Table teamStats={stats?.team1}></Table>
-        </div>
-        <div className="overflow-scroll">
-          <Table teamStats={stats?.team2}></Table>
-        </div>
-      </div>
 
-      <h2 className="my-4 text-lg font-bold">Match Stats History</h2>
-      <div className="z-10 w-full items-center justify-between font-mono text-sm flex py-4">
-        <div className="w-full flex items-center">
-          <div className="w-full overflow-scroll">
-            <Table teamStats={stats?.match}></Table>
+          <h2 className="my-4 text-lg font-bold text-center">Match Stats History</h2>
+          <div className="z-10 w-full items-center justify-between font-mono text-sm flex py-4">
+            <div className="w-full flex items-center">
+              <div className="w-full overflow-scroll">
+                <Table teamStats={stats?.match}></Table>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
     </main>
   );
 }

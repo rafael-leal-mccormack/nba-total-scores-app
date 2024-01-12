@@ -43,8 +43,8 @@ export default function Table(props: PropsWithChildren<Props>) {
                 }
                 return (
                   <td
-                    className={`px-6 py-3 font text-gre ${
-                      index === 0 ? "font-bold text-gray-300" : ""
+                    className={`px-6 py-3 ${
+                      index === 0 ? "font-extrabold" : ""
                     } ${
                       heading === "RESULT" &&
                       (teamStat as any)[heading].includes("W")
