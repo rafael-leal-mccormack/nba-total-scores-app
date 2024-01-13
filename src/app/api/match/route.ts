@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
     });
   }
 
+  // ws://10.0.2.15:8882/devtools/browser/258dc1fe-0b38-42ed-861d-87cac1f9e8a4
   // For remote usage
   let browser: Browser;
   if (process.env.DEV) {
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest) {
     browser = await puppeteer.launch({ headless: false });
   } else {
     browser = await puppeteer.connect({
-      browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=60000&headless=false&blockAds`,
+      browserWSEndpoint: process.env.REMOTE_LOCAL_CHROME,
     });
   }
 
@@ -59,7 +60,7 @@ export async function GET(req: NextRequest) {
     console.log("Finding match specific stats...");
     const matchSpecificStats = await findMatchSpecificStats(page);
 
-    console.log('Found match stats!')
+    console.log('\nFound match stats!', JSON.stringify(matchSpecificStats))
   
     //end browser instance
     await browser.close();

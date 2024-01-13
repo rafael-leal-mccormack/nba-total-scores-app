@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
     browser = await puppeteer.launch({ headless: false });
   } else {
     browser = await puppeteer.connect({
-      browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}&timeout=60000&headless=false&blockAds`,
+      browserWSEndpoint: process.env.REMOTE_LOCAL_CHROME
     });
   }
 
@@ -51,14 +51,12 @@ export async function GET(req: NextRequest) {
   
     console.log("Finding team1 specific stats...");
     const team1Stats = await findTeamStats(page, team1);
-    console.log('Found team 1 stats!')
+    console.log('\nFound team 1 stats!', JSON.stringify(team1Stats))
 
     //end browser instance
     await browser.close();
     return Response.json(team1Stats);
   } catch {
-    await browser.close();
-  } finally {
     await browser.close();
   }
 

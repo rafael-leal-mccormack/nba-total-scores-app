@@ -24,7 +24,7 @@ export default function Home() {
     const matchSpecificStats = fetch(
       `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`,
       {
-        cache: "force-cache",
+        // cache: "force-cache",
         next: {
           // 16 hours * 60 minutes * 60 seconds
           revalidate: 57600,
@@ -32,14 +32,14 @@ export default function Home() {
       }
     );
     const team1Stats = fetch(`/api/team1?team1=${team1Ref.current?.value}`, {
-      cache: "force-cache",
+      // cache: "force-cache",
       next: {
         // 16 hours * 60 minutes * 60 seconds
         revalidate: 57600,
       },
     });
     const team2Stats = fetch(`/api/team2?team2=${team2Ref.current?.value}`, {
-      cache: "force-cache",
+      // cache: "force-cache",
       next: {
         // 16 hours * 60 minutes * 60 seconds
         revalidate: 57600,
