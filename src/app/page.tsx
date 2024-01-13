@@ -47,7 +47,6 @@ export default function Home() {
     });
 
     Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
-      console.log("----", data);
       createStats(data[0], data[1], data[2]);
       setLoading(false);
     });
@@ -148,7 +147,7 @@ export default function Home() {
       </button>
 
         <div className={`w-full ${stats ? '' : 'hidden'}`}>
-          <h2 className="my-4 text-lg font-bold text-center">Total Points Overview</h2>
+          <h2 className="mt-8 mb-4 text-lg font-bold text-center">Total Points Overview</h2>
           <div className="flex justify-between w-full">
             <div className="flex flex-col w-full text-center">
               <h3 className="underline">Team 1 Average</h3>
@@ -169,7 +168,7 @@ export default function Home() {
               {stats?.match ? stats.match[5]["RESULT"] : ""}
             </div>
           </div>
-          <h2 className="my-4 text-lg font-bold text-center">Team Stats History</h2>
+          <h2 className="mt-8 mb-4 text-lg font-bold text-center">Team Stats History</h2>
           <div className="z-10 flex-wrap xl:flex-nowrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
             <div className="overflow-scroll">
               <Table teamStats={stats?.team1}></Table>
@@ -179,7 +178,7 @@ export default function Home() {
             </div>
           </div>
 
-          <h2 className="my-4 text-lg font-bold text-center">Match Stats History</h2>
+          <h2 className="mt-8 mb-4 text-lg font-bold text-center">Match Stats History</h2>
           <div className="z-10 w-full items-center justify-between font-mono text-sm flex py-4">
             <div className="w-full flex items-center">
               <div className="w-full overflow-scroll">
