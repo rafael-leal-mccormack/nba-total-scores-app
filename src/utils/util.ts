@@ -1,6 +1,9 @@
 export type LogoProps = {
   size?: string
 }
+
+export const NBA_API = 'https://api-nba-v1.p.rapidapi.com/teams';
+export const RAPID_API_HOST = 'api-nba-v1.p.rapidapi.com'
 export type NBAAbbreviation =
   | 'ATL'
   | 'BOS'
