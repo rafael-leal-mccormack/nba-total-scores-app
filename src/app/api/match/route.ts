@@ -58,6 +58,8 @@ export async function GET(req: NextRequest) {
   
     console.log("Finding match specific stats...");
     const matchSpecificStats = await findMatchSpecificStats(page);
+
+    console.log('Found match stats!')
   
     //end browser instance
     await browser.close();

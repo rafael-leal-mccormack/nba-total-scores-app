@@ -51,7 +51,8 @@ export async function GET(req: NextRequest) {
   
     console.log("Finding team1 specific stats...");
     const team1Stats = await findTeamStats(page, team1);
-  
+    console.log('Found team 1 stats!')
+
     //end browser instance
     await browser.close();
     return Response.json(team1Stats);

@@ -20,7 +20,7 @@ export default function Home() {
   const [team2Logo, setTeam2Logo] = useState<NBAAbbreviation>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  function getApis() {
+  async function getApis() {
     const matchSpecificStats = fetch(
       `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`,
       {
@@ -46,18 +46,19 @@ export default function Home() {
       },
     });
 
-    Promise.all([matchSpecificStats, team1Stats, team2Stats]).then((data) => {
-      createStats(data[0], data[1], data[2]);
+    await Promise.all([matchSpecificStats, team1Stats, team2Stats]).then(async (data) => {
+      console.log('data', data)
+      await createStats(data[0], data[1], data[2]);
       setLoading(false);
     });
   }
 
-  function createStats(
+  async function createStats(
     matchStats: Response,
     team1Stats: Response,
     team2Stats: Response
   ) {
-    Promise.all([matchStats.json(), team1Stats.json(), team2Stats.json()]).then(
+    await Promise.all([matchStats.json(), team1Stats.json(), team2Stats.json()]).then(
       (data) => {
         const results: Stats = {
           team1: data[1],
