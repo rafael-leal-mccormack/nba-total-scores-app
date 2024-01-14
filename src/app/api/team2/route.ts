@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
 
   if (process.env.DEV) {
     // For local usage
-    browser = await puppeteer.launch({ headless: false });
+    browser = await puppeteer.launch({ headless: true });
   } else {
     browser = await puppeteer.connect({
       browserWSEndpoint: process.env.REMOTE_LOCAL_CHROME,

@@ -4,8 +4,11 @@ import Table from "../components/table";
 import Logo from "../components/Logo";
 import { NBAAbbreviation, getAverageForResults } from "../utils/util";
 import Spinner from "../components/Spinner";
+import PointsOverview from "../components/main-components/points-overview";
+import MatchStats from "../components/main-components/match-stats";
+import TeamStats from "../components/main-components/team-stats";
 
-type Stats = {
+export type Stats = {
   team1: { [key: string]: string }[];
   team2: { [key: string]: string }[];
   match: { [key: string]: string }[];
@@ -148,45 +151,9 @@ export default function Home() {
       </button>
 
         <div className={`w-full ${stats ? '' : 'hidden'}`}>
-          <h2 className="mt-8 mb-4 text-lg font-bold text-center">Total Points Overview</h2>
-          <div className="flex justify-between w-full">
-            <div className="flex flex-col w-full text-center">
-              <h3 className="underline">Team 1 Average</h3>
-              <div className="text-5xl">
-                {stats?.team1 ? stats.team1[5]["PTS"] : ""}
-              </div>
-            </div>
-            <div className="flex flex-col w-full text-center">
-              <h3 className="underline">Team 2 Average</h3>
-              <div className="text-5xl">
-                {stats?.team2 ? stats.team2[5]["PTS"] : ""}
-              </div>
-            </div>
-          </div>
-          <div className="text-center mt-4 md:mt-10">
-            <h3 className="underline">Match Average</h3>
-            <div className="text-5xl">
-              {stats?.match ? stats.match[5]["RESULT"] : ""}
-            </div>
-          </div>
-          <h2 className="mt-8 mb-4 text-lg font-bold text-center">Team Stats History</h2>
-          <div className="z-10 flex-wrap xl:flex-nowrap w-full items-center justify-between font-mono text-sm flex py-4 gap-6">
-            <div className="overflow-scroll">
-              <Table teamStats={stats?.team1}></Table>
-            </div>
-            <div className="overflow-scroll">
-              <Table teamStats={stats?.team2}></Table>
-            </div>
-          </div>
-
-          <h2 className="mt-8 mb-4 text-lg font-bold text-center">Match Stats History</h2>
-          <div className="z-10 w-full items-center justify-between font-mono text-sm flex py-4">
-            <div className="w-full flex items-center">
-              <div className="w-full overflow-scroll">
-                <Table teamStats={stats?.match}></Table>
-              </div>
-            </div>
-          </div>
+          <PointsOverview stats={stats}></PointsOverview>
+          <TeamStats stats={stats}></TeamStats>
+          <MatchStats stats={stats}></MatchStats>
         </div>
     </main>
   );
