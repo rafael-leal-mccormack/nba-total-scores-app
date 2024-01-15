@@ -54,3 +54,13 @@ export type NBAAbbreviation =
   
     return total / 5
   }
+
+  export function getAverageForPoints(teamScores: any[]) {
+    // first 5 are the games
+    let total = 0
+    for(let i = 0; i < 5; i++) {
+      total += Number.parseInt(teamScores[i]['PTS'])
+    }
+  
+    return total / 5
+  }

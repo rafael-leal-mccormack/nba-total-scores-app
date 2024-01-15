@@ -18,7 +18,7 @@ export default function PointsOverview(props: PropsWithoutRef<Props>) {
             (Last 5 games)
           </span>
           <div className="text-5xl">
-            {props.stats?.team1 ? props.stats.team1[5]["PTS"] : ""}
+            {props.stats?.team1[5] ? props.stats.team1[5]["PTS"] : ""}
           </div>
         </div>
         <div className="flex flex-col w-full text-center">
@@ -27,7 +27,7 @@ export default function PointsOverview(props: PropsWithoutRef<Props>) {
             (Last 5 games)
           </span>
           <div className="text-5xl">
-            {props.stats?.team2 ? props.stats.team2[5]["PTS"] : ""}
+            {props.stats?.team2[5] ? props.stats.team2[5]["PTS"] : ""}
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@ export default function PointsOverview(props: PropsWithoutRef<Props>) {
         <h3 className="underline">Match Average</h3>
         <span className="font-light text-xs no-underline">(Last 5 games)</span>
         <div className="text-5xl">
-          {props.stats?.match ? props.stats.match[5]["RESULT"] : ""}
+          {props.stats?.match[5] ? props.stats.match[5]["RESULT"] : ""}
         </div>
       </div>
     </span>

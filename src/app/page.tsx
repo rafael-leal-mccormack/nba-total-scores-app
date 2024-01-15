@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Table from "../components/table";
 import Logo from "../components/Logo";
-import { NBAAbbreviation, getAverageForResults } from "../utils/util";
+import { NBAAbbreviation, getAverageForPoints, getAverageForResults } from "../utils/util";
 import Spinner from "../components/Spinner";
 import PointsOverview from "../components/main-components/points-overview";
 import MatchStats from "../components/main-components/match-stats";
@@ -49,11 +49,13 @@ export default function Home() {
       },
     });
 
-    await Promise.all([matchSpecificStats, team1Stats, team2Stats]).then(async (data) => {
-      console.log('data', data)
-      await createStats(data[0], data[1], data[2]);
-      setLoading(false);
-    });
+    await Promise.all([matchSpecificStats, team1Stats, team2Stats]).then(
+      async (data) => {
+        console.log("data", data);
+        await createStats(data[0], data[1], data[2]);
+        setLoading(false);
+      }
+    );
   }
 
   async function createStats(
@@ -61,26 +63,40 @@ export default function Home() {
     team1Stats: Response,
     team2Stats: Response
   ) {
-    await Promise.all([matchStats.json(), team1Stats.json(), team2Stats.json()]).then(
-      (data) => {
-        const results: Stats = {
-          team1: data[1],
-          team2: data[2],
-          match: data[0],
-        };
-        const team1avg = getAverageForResults(results.team1);
-        results.team1[5]["RESULT"] = team1avg.toString();
-        const team2avg = getAverageForResults(results.team2);
-        results.team2[5]["RESULT"] = team2avg.toString();
-        const matchAvg = getAverageForResults(results.match);
-        results.match[5]["RESULT"] = matchAvg.toString();
-
-        setLoading(false);
-        setTeam1Logo((results?.match[0] as any)["TM"]);
-        setTeam2Logo((results?.match[0] as any)["OPP"]);
-        setStats(results);
+    await Promise.all([
+      matchStats.json(),
+      team1Stats.json(),
+      team2Stats.json(),
+    ]).then((data) => {
+      const results: Stats = {
+        team1: data[1],
+        team2: data[2],
+        match: data[0],
+      };
+      console.log(results);
+      const team1avg = getAverageForResults(results.team1);
+      if (results.team1.length < 6) {
+        results.team1.push({ RESULT: "", PTS: getAverageForPoints(results.team1).toString()});
       }
-    );
+      results.team1[5]["RESULT"] = team1avg.toString();
+
+      const team2avg = getAverageForResults(results.team2);
+      if (results.team2.length < 6) {
+        results.team2.push({ RESULT: "", PTS: getAverageForPoints(results.team2).toString() });
+      }
+      results.team2[5]["RESULT"] = team2avg.toString();
+
+      const matchAvg = getAverageForResults(results.match);
+      if (results.match.length < 6) {
+        results.match.push({ RESULT: "" });
+      }
+      results.match[5]["RESULT"] = matchAvg.toString();
+
+      setLoading(false);
+      setTeam1Logo((results?.match[0] as any)["TM"]);
+      setTeam2Logo((results?.match[0] as any)["OPP"]);
+      setStats(results);
+    });
   }
 
   useEffect(() => {
@@ -150,11 +166,11 @@ export default function Home() {
         Compare
       </button>
 
-        <div className={`w-full ${stats ? '' : 'hidden'}`}>
-          <PointsOverview stats={stats}></PointsOverview>
-          <TeamStats stats={stats}></TeamStats>
-          <MatchStats stats={stats}></MatchStats>
-        </div>
+      <div className={`w-full ${stats ? "" : "hidden"}`}>
+        <PointsOverview stats={stats}></PointsOverview>
+        <TeamStats stats={stats}></TeamStats>
+        <MatchStats stats={stats}></MatchStats>
+      </div>
     </main>
   );
 }
