@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import Table from "../components/table";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Logo from "../components/Logo";
 import { NBAAbbreviation, getAverageForPoints, getAverageForResults } from "../utils/util";
 import Spinner from "../components/Spinner";
@@ -73,7 +72,6 @@ export default function Home() {
         team2: data[2],
         match: data[0],
       };
-      console.log(results);
       const team1avg = getAverageForResults(results.team1);
       if (results.team1.length < 6) {
         results.team1.push({ RESULT: "", PTS: getAverageForPoints(results.team1).toString()});
@@ -112,7 +110,7 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 lg:p-12">
+    <Fragment>
       {loading ? (
         <div className="flex justify-center items-center absolute h-full w-full left-0 top-0 z-20">
           <Spinner></Spinner>
@@ -120,11 +118,7 @@ export default function Home() {
       ) : (
         ""
       )}
-      <a target="_blank" href="https://www.buymeacoffee.com/rafael_leal">
-        <div className="text-white mt-4 bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:border-gray-700">
-          🍺 Buy me a beer!
-        </div>
-      </a>
+
       <div className="text-center">
         <p className="text-sm">
           This website displays the recent performance of NBA teams in their
@@ -171,6 +165,6 @@ export default function Home() {
         <TeamStats stats={stats}></TeamStats>
         <MatchStats stats={stats}></MatchStats>
       </div>
-    </main>
+    </Fragment>
   );
 }
