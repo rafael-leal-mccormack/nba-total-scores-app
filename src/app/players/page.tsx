@@ -50,6 +50,7 @@ export default function PlayersPage() {
       ) : (
         ""
       )}
+      <p className="mb-4">Statistics for a players last 5 games.</p>
       <label>Player</label>
       <input
         ref={playerInput}
