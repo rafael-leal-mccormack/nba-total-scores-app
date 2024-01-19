@@ -8,11 +8,8 @@ import puppeteer, { Browser, Page } from "puppeteer";
 // export const runtime = "edge"
 export const maxDuration = 30;
 
-
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(
-    req.url as string
-  );
+  const { searchParams } = new URL(req.url as string);
   const url = statMuseUrl;
   const player = searchParams.get("player");
 
@@ -37,32 +34,35 @@ export async function GET(req: NextRequest) {
     browser = await puppeteer.launch({ headless: true });
   } else {
     browser = await puppeteer.connect({
-      browserWSEndpoint: process.env.REMOTE_LOCAL_CHROME
+      browserWSEndpoint: process.env.REMOTE_LOCAL_CHROME,
     });
   }
 
   try {
     const page = await browser.newPage();
+    const ua =
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
+    await page.setUserAgent(ua);
     await page.setViewport({ width: 1920, height: 1080 });
-    const searchQuery = `${player}, last 5 games`
-  
+    const searchQuery = `${player}, last 5 games`;
+
     await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
-  
+
     console.log("Finding player specific stats...");
     const playerStats = await findPlayerStats(page);
-    console.log('\nFound team 1 stats!', JSON.stringify(playerStats))
+    console.log("\nFound team 1 stats!");
 
     //end browser instance
     await browser.close();
     return Response.json(playerStats);
   } catch {
     await browser.close();
+    return Response.error();
   }
-
 }
 
 const statMuseUrl = "https://www.statmuse.com/";
-const nbaPath = "nba/ask/"
+const nbaPath = "nba/ask/";
 
 async function findPlayerStats(page: Page) {
   console.log("waiting for table to show");

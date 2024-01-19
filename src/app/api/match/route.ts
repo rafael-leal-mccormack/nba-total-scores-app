@@ -53,6 +53,9 @@ export async function GET(req: NextRequest) {
   try {
 
     const page = await browser.newPage();
+    const ua =
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
+  await page.setUserAgent(ua);
     await page.setViewport({ width: 1920, height: 1080 });
     const searchQuery = `${team1} vs ${team2}, last 5 games`
     await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
@@ -67,6 +70,7 @@ export async function GET(req: NextRequest) {
     return Response.json(matchSpecificStats);
   } catch {
     await browser.close();
+    return Response.error()
   }
 }
 

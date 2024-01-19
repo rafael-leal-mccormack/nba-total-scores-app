@@ -62,39 +62,45 @@ export default function Home() {
     team1Stats: Response,
     team2Stats: Response
   ) {
-    await Promise.all([
-      matchStats.json(),
-      team1Stats.json(),
-      team2Stats.json(),
-    ]).then((data) => {
-      const results: Stats = {
-        team1: data[1],
-        team2: data[2],
-        match: data[0],
-      };
-      const team1avg = getAverageForResults(results.team1);
-      if (results.team1.length < 6) {
-        results.team1.push({ RESULT: "", PTS: getAverageForPoints(results.team1).toString()});
-      }
-      results.team1[5]["RESULT"] = team1avg.toString();
+    try {
 
-      const team2avg = getAverageForResults(results.team2);
-      if (results.team2.length < 6) {
-        results.team2.push({ RESULT: "", PTS: getAverageForPoints(results.team2).toString() });
-      }
-      results.team2[5]["RESULT"] = team2avg.toString();
-
-      const matchAvg = getAverageForResults(results.match);
-      if (results.match.length < 6) {
-        results.match.push({ RESULT: "" });
-      }
-      results.match[5]["RESULT"] = matchAvg.toString();
-
-      setLoading(false);
-      setTeam1Logo((results?.match[0] as any)["TM"]);
-      setTeam2Logo((results?.match[0] as any)["OPP"]);
-      setStats(results);
-    });
+      await Promise.all([
+        matchStats.json(),
+        team1Stats.json(),
+        team2Stats.json(),
+      ]).then((data) => {
+        const results: Stats = {
+          team1: data[1],
+          team2: data[2],
+          match: data[0],
+        };
+        const team1avg = getAverageForResults(results.team1);
+        if (results.team1.length < 6) {
+          results.team1.push({ RESULT: "", PTS: getAverageForPoints(results.team1).toString()});
+        }
+        results.team1[5]["RESULT"] = team1avg.toString();
+  
+        const team2avg = getAverageForResults(results.team2);
+        if (results.team2.length < 6) {
+          results.team2.push({ RESULT: "", PTS: getAverageForPoints(results.team2).toString() });
+        }
+        results.team2[5]["RESULT"] = team2avg.toString();
+  
+        const matchAvg = getAverageForResults(results.match);
+        if (results.match.length < 6) {
+          results.match.push({ RESULT: "" });
+        }
+        results.match[5]["RESULT"] = matchAvg.toString();
+  
+        setLoading(false);
+        setTeam1Logo((results?.match[0] as any)["TM"]);
+        setTeam2Logo((results?.match[0] as any)["OPP"]);
+        setStats(results);
+      });
+    } catch (er) {
+      console.warn(er)
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
