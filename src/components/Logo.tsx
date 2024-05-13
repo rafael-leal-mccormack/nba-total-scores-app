@@ -30,68 +30,68 @@ import TOR from "./logos/tor";
 import UTA from "./logos/uta";
 import WAS from "./logos/was";
 
-export default function Logo(props: { name: NBAAbbreviation }) {
+export default function Logo(props: { name: NBAAbbreviation, size?: string }) {
   switch (props.name) {
     case 'ATL':
-      return <ATL/>;
+      return <ATL size={props.size}/>;
     case 'BOS':
-      return <BOS/>;
+      return <BOS size={props.size}/>;
     case 'BKN':
-      return <BKN/>;
+      return <BKN size={props.size}/>;
     case 'CHA':
-      return <CHA/>;
+      return <CHA size={props.size}/>;
     case 'CHI':
-      return <CHI/>;
+      return <CHI size={props.size}/>;
     case 'CLE':
-      return <CLE/>;
+      return <CLE size={props.size}/>;
     case 'DAL':
-      return <DAL/>;
+      return <DAL size={props.size}/>;
     case 'DEN':
-      return <DEN/>;
+      return <DEN size={props.size}/>;
     case 'DET':
-      return <DET/>;
+      return <DET size={props.size}/>;
     case 'GSW':
-      return <GSW/>;
+      return <GSW size={props.size}/>;
     case 'HOU':
-      return <HOU/>;
+      return <HOU size={props.size}/>;
     case 'IND':
-      return <IND/>;
+      return <IND size={props.size}/>;
     case 'LAC':
-      return <LAC/>;
+      return <LAC size={props.size}/>;
     case 'LAL':
-      return <LAL/>;
+      return <LAL size={props.size}/>;
     case 'MEM':
-      return <MEM/>;
+      return <MEM size={props.size}/>;
     case 'MIA':
-      return <MIA/>;
+      return <MIA size={props.size}/>;
     case 'MIL':
-      return <MIL/>;
+      return <MIL size={props.size}/>;
     case 'MIN':
-      return <MIN/>;
+      return <MIN size={props.size}/>;
     case 'NOP':
-      return <NOP/>;
+      return <NOP size={props.size}/>;
     case 'NYK':
-      return <NYK/>;
+      return <NYK size={props.size}/>;
     case 'OKC':
-      return <OKC/>;
+      return <OKC size={props.size}/>;
     case 'ORL':
-      return <ORL/>;
+      return <ORL size={props.size}/>;
     case 'PHI':
-      return <PHI/>;
+      return <PHI size={props.size}/>;
     case 'PHX':
-      return <PHX/>;
+      return <PHX size={props.size}/>;
     case 'POR':
-      return <POR/>;
+      return <POR size={props.size}/>;
     case 'SAC':
-      return <SAC/>;
+      return <SAC size={props.size}/>;
     case 'SAS':
-      return <SAS/>;
+      return <SAS size={props.size}/>;
     case 'TOR':
-      return <TOR/>;
+      return <TOR size={props.size}/>;
     case 'UTA':
-      return <UTA/>;
+      return <UTA size={props.size}/>;
     case 'WAS':
-      return <WAS/>;
+      return <WAS size={props.size}/>;
     // Add more cases for other teams
     default:
       // Return a default component or handle unknown abbreviations
