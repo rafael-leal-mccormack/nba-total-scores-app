@@ -11,6 +11,7 @@ export type Stats = {
   team1: { [key: string]: string }[];
   team2: { [key: string]: string }[];
   match: { [key: string]: string }[];
+  id?: string
 } | null;
 
 export default function Home() {
@@ -50,7 +51,6 @@ export default function Home() {
 
     await Promise.all([matchSpecificStats, team1Stats, team2Stats]).then(
       async (data) => {
-        console.log("data", data);
         await createStats(data[0], data[1], data[2]);
         setLoading(false);
       }
@@ -126,10 +126,6 @@ export default function Home() {
       )}
 
       <div className="text-center">
-        <p className="text-sm">
-          This website displays the recent performance of NBA teams in their
-          last 5 games against one another.
-        </p>
         <p className="text-sm">
           The first two tables show the last 5 games of each team respectively,
           and the third table shows the last 5 games between Team 1 and Team 2.
