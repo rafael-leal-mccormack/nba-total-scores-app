@@ -39,8 +39,8 @@ export default async function RootLayout({
         </div>
         <DailyGames></DailyGames>
         <main className="flex min-h-screen flex-col items-center p-4 lg:p-12">
+        <BeerButton></BeerButton>
           {children}
-          <BeerButton></BeerButton>
         </main>
         <Analytics></Analytics>
         <SpeedInsights></SpeedInsights>

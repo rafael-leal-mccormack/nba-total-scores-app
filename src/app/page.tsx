@@ -1,17 +1,26 @@
 "use client";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Logo from "../components/Logo";
-import { NBAAbbreviation, getAverageForPoints, getAverageForResults } from "../utils/util";
+import {
+  NBAAbbreviation,
+  getAverageForPoints,
+  getAverageForResults,
+} from "../utils/util";
 import Spinner from "../components/Spinner";
 import PointsOverview from "../components/main-components/points-overview";
 import MatchStats from "../components/main-components/match-stats";
 import TeamStats from "../components/main-components/team-stats";
+import { TEAMS } from "../utils/team-data";
+import {
+  Autocomplete,
+  AutocompleteItem,
+} from "@nextui-org/autocomplete";
 
 export type Stats = {
   team1: { [key: string]: string }[];
   team2: { [key: string]: string }[];
   match: { [key: string]: string }[];
-  id?: string
+  id?: string;
 } | null;
 
 export default function Home() {
@@ -63,7 +72,6 @@ export default function Home() {
     team2Stats: Response
   ) {
     try {
-
       await Promise.all([
         matchStats.json(),
         team1Stats.json(),
@@ -76,30 +84,36 @@ export default function Home() {
         };
         const team1avg = getAverageForResults(results.team1);
         if (results.team1.length < 6) {
-          results.team1.push({ RESULT: "", PTS: getAverageForPoints(results.team1).toString()});
+          results.team1.push({
+            RESULT: "",
+            PTS: getAverageForPoints(results.team1).toString(),
+          });
         }
         results.team1[5]["RESULT"] = team1avg.toString();
-  
+
         const team2avg = getAverageForResults(results.team2);
         if (results.team2.length < 6) {
-          results.team2.push({ RESULT: "", PTS: getAverageForPoints(results.team2).toString() });
+          results.team2.push({
+            RESULT: "",
+            PTS: getAverageForPoints(results.team2).toString(),
+          });
         }
         results.team2[5]["RESULT"] = team2avg.toString();
-  
+
         const matchAvg = getAverageForResults(results.match);
         if (results.match.length < 6) {
           results.match.push({ RESULT: "" });
         }
         results.match[5]["RESULT"] = matchAvg.toString();
-  
+
         setLoading(false);
         setTeam1Logo((results?.match[0] as any)["TM"]);
         setTeam2Logo((results?.match[0] as any)["OPP"]);
         setStats(results);
       });
     } catch (er) {
-      console.warn(er)
-      setLoading(false)
+      console.warn(er);
+      setLoading(false);
     }
   }
 
@@ -125,32 +139,52 @@ export default function Home() {
         ""
       )}
 
-      <div className="text-center">
-        <p className="text-sm">
-          The first two tables show the last 5 games of each team respectively,
-          and the third table shows the last 5 games between Team 1 and Team 2.
-        </p>
-      </div>
       <div className="z-10 max-w-5xl flex-wrap w-full items-center justify-center font-mono text-sm flex gap-8">
         <div className="flex flex-col items-center sm:mr-auto">
           <div className="h-24 w-24">
             <Logo name={team1Logo}></Logo>
           </div>
           <label className="m-1">Team 1</label>
-          <input
+          <Autocomplete
+            variant="bordered"
             ref={team1Ref}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          ></input>
+            label="Select a team"
+            className="max-w-xs"
+          >
+            {TEAMS.map((team) => (
+              <AutocompleteItem key={team.id} textValue={team.name}>
+              <div className="flex gap-2 items-center">
+                <Logo size="40" name={team.code as NBAAbbreviation}></Logo>
+                <div className="flex flex-col">
+                  <span className="text-small">{team.name}</span>
+                </div>
+              </div>
+            </AutocompleteItem>
+            ))}
+          </Autocomplete>
         </div>
         <div className="flex flex-col items-center">
           <div className="h-24 w-24">
             <Logo name={team2Logo}></Logo>
           </div>
           <label className="m-1">Team 2</label>
-          <input
+          <Autocomplete
+            variant="bordered"
             ref={team2Ref}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          ></input>
+            label="Select a team"
+            className="max-w-xs"
+          >
+            {TEAMS.map((team) => (
+              <AutocompleteItem key={team.id} textValue={team.name}>
+                <div className="flex gap-2 items-center">
+                  <Logo size="40" name={team.code as NBAAbbreviation}></Logo>
+                  <div className="flex flex-col">
+                    <span className="text-small">{team.name}</span>
+                  </div>
+                </div>
+              </AutocompleteItem>
+            ))}
+          </Autocomplete>
         </div>
       </div>
       <button
@@ -161,7 +195,12 @@ export default function Home() {
       >
         Compare
       </button>
-
+      <div className="text-center">
+        <p className="text-sm">
+          The first two tables show the last 5 games of each team respectively,
+          and the third table shows the last 5 games between Team 1 and Team 2.
+        </p>
+      </div>
       <div className={`w-full ${stats ? "" : "hidden"}`}>
         <PointsOverview stats={stats}></PointsOverview>
         <TeamStats stats={stats}></TeamStats>
