@@ -15,6 +15,7 @@ import {
   Autocomplete,
   AutocompleteItem,
 } from "@nextui-org/autocomplete";
+import { insertGameCache } from "../utils/game-cache/game-cache";
 
 export type Stats = {
   team1: { [key: string]: string }[];
@@ -33,6 +34,24 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function getApis() {
+    try {
+      const cache = await fetch(`/api/game-cache?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`)
+      if (cache.ok) {
+        const data = await cache.json();
+        setLoading(false);
+        setTeam1Logo((data?.matchdata[0])["TM"]);
+        setTeam2Logo((data?.matchdata[0])["OPP"]);
+        setStats({
+          team1: data.team1data,
+          team2: data.team2data,
+          match: data.matchdata
+        });
+        return;
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     const matchSpecificStats = fetch(
       `/api/match?team1=${team1Ref.current?.value}&team2=${team2Ref.current?.value}`,
       {
@@ -110,6 +129,7 @@ export default function Home() {
         setTeam1Logo((results?.match[0] as any)["TM"]);
         setTeam2Logo((results?.match[0] as any)["OPP"]);
         setStats(results);
+        insertGameCache(results);
       });
     } catch (er) {
       console.warn(er);
