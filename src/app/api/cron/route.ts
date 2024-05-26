@@ -3,7 +3,7 @@ import { getDailyMatchData, getMatchAndTeamData } from "../../../utils/match-dat
 import { Stats } from "../../page";
 import { createClient } from "../../../utils/supabase/server";
 import deleteSupabaseDailyGameEntries from "../../../utils/deleteDailyGameEntries";
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+export const dynamic = 'force-dynamic'; 
 
 export async function GET(req: NextRequest) {
   console.log('Getting daily games')
