@@ -6,5 +6,5 @@ export default async function deleteSupabaseDailyGameEntries(supabase: SupabaseC
     console.log('[Delete daily games]', error)
   }
 
-  console.log(data)
+  console.log('Deleted games', data)
 }

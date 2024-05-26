@@ -16,6 +16,7 @@ export async function GET() {
     calls.push(getMatchAndTeamData(match.teams.visitors.name, match.teams.home.name, match.id))
   })
 
+  console.log('Processing match data for daily games')
   const data = await Promise.all(calls);
 
   const supabase = createClient();
@@ -36,6 +37,8 @@ export async function GET() {
     if (error) {
       console.log(error)
       totalErrors++;
+    } else {
+      console.log('Inserting: ', stat?.id, stat?.team1[0]["TEAM"], stat?.team2[0]["TEAM"])
     }
   }
 
