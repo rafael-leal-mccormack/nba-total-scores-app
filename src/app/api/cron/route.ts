@@ -5,7 +5,7 @@ import { createClient } from "../../../utils/supabase/server";
 import deleteSupabaseDailyGameEntries from "../../../utils/deleteDailyGameEntries";
 export const dynamic = 'force-dynamic'; 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   console.log('Getting daily games')
   const matches = await getDailyMatchData();
   console.log('Receieved from RAPID API!')
