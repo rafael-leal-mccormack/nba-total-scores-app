@@ -41,34 +41,18 @@ export async function getDailyMatchData() {
 
   const matches: Match[] = [...todaysMatches, ...tomorrowsMatches];
 
+  console.log("Matches for today and tomorrow", JSON.stringify(matches));
   return matches;
 }
 
-export async function getMatchAndTeamData(team1: string, team2: string, matchId: string) {
-  const matchSpecificStats = fetch(
-    `${process.env.URL}/api/match?team1=${team1}&team2=${team2}`,
-    {
-      // cache: "force-cache",
-      next: {
-        // 16 hours * 60 minutes * 60 seconds
-        revalidate: 57600,
-      },
-    }
-  );
-  const team1Stats = fetch(`${process.env.URL}/api/team1?team1=${team1}`, {
-    // cache: "force-cache",
-    next: {
-      // 16 hours * 60 minutes * 60 seconds
-      revalidate: 57600,
-    },
-  });
-  const team2Stats = fetch(`${process.env.URL}/api/team2?team2=${team2}`, {
-    // cache: "force-cache",
-    next: {
-      // 16 hours * 60 minutes * 60 seconds
-      revalidate: 57600,
-    },
-  });
+export async function getMatchAndTeamData(
+  team1: string,
+  team2: string,
+  matchId: string
+) {
+  const matchSpecificStats = fetch(`${process.env.URL}/api/match?team1=${team1}&team2=${team2}`);
+  const team1Stats = fetch(`${process.env.URL}/api/team1?team1=${team1}`);
+  const team2Stats = fetch(`${process.env.URL}/api/team2?team2=${team2}`);
 
   const [matchData, team1Data, team2Data] = await Promise.all([
     matchSpecificStats,
@@ -96,7 +80,7 @@ async function createStats(
       team1: team1,
       team2: team2,
       match: match,
-      id: matchId
+      id: matchId,
     };
     const team1avg = getAverageForResults(results.team1);
     if (results.team1.length < 6) {
