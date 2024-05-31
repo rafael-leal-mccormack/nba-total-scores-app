@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDailyMatchData, getMatchAndTeamData } from "../../../utils/match-data/match-data";
+import { getDailyMatchDataRapid, getMatchAndTeamData } from "../../../utils/match-data/match-data";
 import { Stats } from "../../page";
 import { createClient } from "../../../utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
 
   console.log('Getting daily games')
-  const matches = await getDailyMatchData();
+  const matches = await getDailyMatchDataRapid();
   console.log('Receieved from RAPID API!')
 
   const calls: Promise<Stats>[] = []

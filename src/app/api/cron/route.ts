@@ -12,7 +12,7 @@ export async function GET() {
   console.log('Receieved from RAPID API!')
 
   const calls: Promise<Stats>[] = []
-  matches.forEach(match => {
+  matches?.forEach(match => {
     calls.push(getMatchAndTeamData(match.teams.visitors.name, match.teams.home.name, match.id))
   })
 

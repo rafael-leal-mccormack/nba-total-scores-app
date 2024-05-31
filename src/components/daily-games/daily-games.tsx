@@ -8,14 +8,14 @@ export default async function DailyGames() {
     <>
       <h3 className="mt-8 mb-4 text-lg font-bold text-center">Daily games</h3>
       <div className="flex flex-wrap gap-8 p-6 justify-center">
-        {matches.map((match) => (
+        {matches?.map((match) => (
           <Card
             key={match.id}
             matchId={match.id}
-            team1={match.teams.visitors.name}
-            team1Logo={match.teams.visitors.code}
-            team2={match.teams.home.name}
-            team2Logo={match.teams.home.code}
+            team1={match.team1}
+            team1Logo={match.team1data[0]["TM"]}
+            team2={match.team2}
+            team2Logo={match.team2data[0]["TM"]}
           ></Card>
         ))}
       </div>

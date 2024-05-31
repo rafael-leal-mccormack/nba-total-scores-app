@@ -1,8 +1,25 @@
 import { Stats } from "../../app/page";
 import { Match } from "../rapid-match-data";
+import { createClient } from "../supabase/server";
 import { getAverageForPoints, getAverageForResults } from "../util";
 
 export async function getDailyMatchData() {
+ const supabase = createClient();
+
+ console.log("Getting daily games")
+ const {data, error} = await supabase.from("dailynbagames").select("*");
+
+ if (error) {
+  console.log("error getting daily games", error)
+ }
+
+ console.log("Daily games found!")
+
+ return data;
+}
+
+export async function getDailyMatchDataRapid() {
+  console.log('Getting daily match data');
   const date = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(date.getDate() + 1);
@@ -36,12 +53,14 @@ export async function getDailyMatchData() {
     console.log("Error while fetching daily games");
   }
 
-  const todaysMatches = (await todayGames?.json()).response || [];
-  const tomorrowsMatches = (await tomorrowGames?.json()).response || [];
+  const todaysMatches = (await todayGames?.json())?.response || [];
+  console.log('Todays matches', JSON.stringify(todaysMatches));
+  const tomorrowsMatches = (await tomorrowGames?.json())?.response || [];
+  console.log('Tomorrows matches', JSON.stringify(tomorrowsMatches));
+
 
   const matches: Match[] = [...todaysMatches, ...tomorrowsMatches];
 
-  console.log("Matches for today and tomorrow", JSON.stringify(matches));
   return matches;
 }
 
