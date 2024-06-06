@@ -10,10 +10,11 @@ export async function GET() {
   console.log('Getting daily games')
   const matches = await getDailyMatchData();
   console.log('Receieved from RAPID API!')
+  console.log(matches)
 
   const calls: Promise<Stats>[] = []
   matches?.forEach(match => {
-    calls.push(getMatchAndTeamData(match.teams.visitors.name, match.teams.home.name, match.id))
+    calls.push(getMatchAndTeamData(match.team1, match.team2, match.id))
   })
 
   console.log('Processing match data for daily games')
