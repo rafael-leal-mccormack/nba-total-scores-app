@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDailyMatchData, getMatchAndTeamData } from "../../../utils/match-data/match-data";
+import { getDailyMatchData, getDailyMatchDataRapid, getMatchAndTeamData } from "../../../utils/match-data/match-data";
 import { Stats } from "../../page";
 import { createClient } from "../../../utils/supabase/server";
 import deleteSupabaseDailyGameEntries from "../../../utils/deleteDailyGameEntries";
@@ -8,13 +8,13 @@ export const maxDuration = 45;
 
 export async function GET() {
   console.log('Getting daily games')
-  const matches = await getDailyMatchData();
+  const matches = await getDailyMatchDataRapid();
   console.log('Receieved from RAPID API!')
   console.log(matches)
 
   const calls: Promise<Stats>[] = []
   matches?.forEach(match => {
-    calls.push(getMatchAndTeamData(match.team1, match.team2, match.id))
+    calls.push(getMatchAndTeamData(match.teams.visitors.name, match.teams.home.name, match.id))
   })
 
   console.log('Processing match data for daily games')
