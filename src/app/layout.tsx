@@ -6,9 +6,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import NavBar from "../components/main-components/navbar";
 import BeerButton from "../components/main-components/beer-button";
 import { createBrowserClient } from "@supabase/ssr";
-import Card from "../components/daily-games/card";
-import { Match } from "../utils/rapid-match-data";
 import DailyGames from "../components/daily-games/daily-games";
+import HardRockButton from "../components/main-components/hard-rock-button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,7 +38,11 @@ export default async function RootLayout({
         </div>
         <DailyGames></DailyGames>
         <main className="flex min-h-screen flex-col items-center p-4 lg:p-12">
-        <BeerButton></BeerButton>
+          <div className="flex gap-3 items-center mb-4 flex-wrap justify-center">
+            <BeerButton></BeerButton>
+            <p>OR</p>
+            <HardRockButton></HardRockButton>
+          </div>
           {children}
         </main>
         <Analytics></Analytics>
