@@ -4,7 +4,7 @@ import { Stats } from "../../page";
 import { createClient } from "../../../utils/supabase/server";
 import deleteSupabaseDailyGameEntries from "../../../utils/deleteDailyGameEntries";
 export const dynamic = 'force-dynamic'; 
-export const maxDuration = 45;
+export const maxDuration = 250;
 
 export async function GET() {
   console.log('Getting daily games')
