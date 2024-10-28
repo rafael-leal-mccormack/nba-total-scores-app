@@ -42,6 +42,8 @@ export default async function MatchPage({ searchParams }: Props) {
       >
         <PointsOverview
           stats={convertDailyGameToStats(dailyGame)}
+          team1Logo={dailyGame?.matchdata[0]["TM"]}
+          team2Logo={dailyGame?.matchdata[0]["OPP"]}
         ></PointsOverview>
         <TeamStats stats={convertDailyGameToStats(dailyGame)}></TeamStats>
         <MatchStats stats={convertDailyGameToStats(dailyGame)}></MatchStats>
