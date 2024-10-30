@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 // For local usage
 import puppeteer, { Browser, Page } from "puppeteer";
+import { createClient } from "../../../utils/supabase/server";
 
 // For remote usage
 // import puppeteer, { Browser, Page } from "puppeteer-core";
@@ -37,6 +38,41 @@ export async function GET(req: NextRequest) {
       status: 400,
     });
   }
+
+  const supabase = createClient();
+
+  let team1Name = "";
+  let team2Name = ""
+
+  if (team1.split(" ").length > 1) {
+    let splitName = team1.split(" ")
+    team1Name = splitName[splitName.length - 1].toLowerCase()
+  } else {
+    team1Name = team1.toLowerCase();
+  }
+
+  if (team2.split(" ").length > 1) {
+    let splitName = team2.split(" ")
+    team2Name = splitName[splitName.length - 1].toLowerCase()
+  } else {
+    team2Name = team2.toLowerCase();
+  }
+
+  const gameId = team1Name
+  .toLowerCase()
+  .split("")
+  .concat(team2Name.toLowerCase().split(""));
+  const {data: match, error} = await supabase.from("nbagamecache").select("*").eq("game_id", gameId.sort().join(""));
+  
+  if (error) {
+    console.log("Error with match stats cache", error)
+  }
+
+  if (match && match[0]?.matchdata) {
+    console.log("Found match stats in cache", gameId.sort().join(""))
+    return Response.json(match[0].matchdata)
+  }
+
 
   // ws://10.0.2.15:8882/devtools/browser/258dc1fe-0b38-42ed-861d-87cac1f9e8a4
   // For remote usage
@@ -83,7 +119,10 @@ async function findMatchSpecificStats(
   page: Page
 ) {
   console.log("waiting for table to show");
-  await page.waitForSelector("div.relative table");
+  await page.waitForSelector("div.relative table", {
+    timeout: 100000,  // 60 seconds
+    visible: true  
+  });
 
   // convert table to json data
   const data = await page.evaluate(async () => {

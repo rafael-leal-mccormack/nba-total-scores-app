@@ -68,7 +68,10 @@ const nbaPath = "nba/ask/";
 
 async function findPlayerStats(page: Page) {
   console.log("waiting for table to show");
-  await page.waitForSelector("div.relative table");
+  await page.waitForSelector("div.relative table",{
+    timeout: 100000,  // 60 seconds
+    visible: true  
+  });
 
   // convert table to json data
   const data = await page.evaluate(async () => {

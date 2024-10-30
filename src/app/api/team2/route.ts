@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 // For local usage
 import puppeteer, { Browser, Page } from "puppeteer";
+import { createClient } from "../../../utils/supabase/server";
 
 // For remote usage
 // import puppeteer, { Browser, Page } from "puppeteer-core";
@@ -28,6 +29,25 @@ export async function GET(req: NextRequest) {
     return new Response(`A team2 query-parameter is required`, {
       status: 400,
     });
+  }
+  const supabase = createClient();
+  let teamName = "";
+
+  if (team2.split(" ").length > 1) {
+    let splitName = team2.split(" ")
+    teamName = splitName[splitName.length - 1].toLowerCase()
+  } else {
+    teamName = team2.toLowerCase();
+  }
+  const {data, error} = await supabase.from("nbagamecache").select("*").eq("team2", teamName);
+
+  if (error) {
+    console.log("Error with team 2 stats cache", error)
+  }
+
+  if (data && data[0]?.team2data) {
+    console.log("Found team 2 data in cache")
+    return Response.json(data[0].team2data)
   }
 
   // For remote usage
@@ -73,7 +93,10 @@ const nbaPath = "nba/ask/"
 
 async function findTeamStats(page: Page, team: string) {
   console.log("waiting for table to show");
-  await page.waitForSelector("div.relative table");
+  await page.waitForSelector("div.relative table",{
+    timeout: 100000,  // 60 seconds
+    visible: true  
+  });
 
   // convert table to json data
   const data = await page.evaluate(async () => {

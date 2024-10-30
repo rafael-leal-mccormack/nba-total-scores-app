@@ -152,7 +152,7 @@ export default function Home() {
   return (
     <Fragment>
       {loading ? (
-        <div className="flex justify-center items-center absolute h-full w-full left-0 top-0 z-20">
+        <div className="flex justify-center items-center fixed h-full w-full left-0 top-0 z-20 bg-black opacity-40">
           <Spinner></Spinner>
         </div>
       ) : (
