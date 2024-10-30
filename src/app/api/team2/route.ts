@@ -49,7 +49,8 @@ export async function GET(req: NextRequest) {
   await page.setUserAgent(ua);
     await page.setViewport({ width: 1920, height: 1080 });
     const searchQuery = `${team2}, last 5 games`
-  
+    console.log("Going to " + nbaPath + searchQuery.replace(" ", "-"))
+
     await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
   
     console.log("Finding team2 specific stats...");
@@ -59,7 +60,8 @@ export async function GET(req: NextRequest) {
     //end browser instance
     await browser.close();
     return Response.json(team2Stats);
-  } catch {
+  } catch (err) {
+    console.log(err)
     browser.close();
     return Response.error();
   }

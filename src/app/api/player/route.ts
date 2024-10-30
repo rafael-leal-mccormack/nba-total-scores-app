@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
     await page.setViewport({ width: 1920, height: 1080 });
     const searchQuery = `${player}, last 5 games`;
 
+    console.log("Going to " + nbaPath + searchQuery.replace(" ", "-"))
     await page.goto(statMuseUrl + nbaPath + searchQuery.replace(" ", "-"));
 
     console.log("Finding player specific stats...");
@@ -55,7 +56,8 @@ export async function GET(req: NextRequest) {
     //end browser instance
     await browser.close();
     return Response.json(playerStats);
-  } catch {
+  } catch (err) {
+    console.log(err)
     await browser.close();
     return Response.error();
   }
