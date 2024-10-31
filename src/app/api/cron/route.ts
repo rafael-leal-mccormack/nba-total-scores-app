@@ -6,7 +6,7 @@ import deleteSupabaseDailyGameEntries from "../../../utils/deleteDailyGameEntrie
 
 // Configuration
 const BATCH_SIZE = 5;
-const BATCH_DELAY = 2000; // 2 seconds between batches
+const BATCH_DELAY = 300; // 2 seconds between batches
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 250;

@@ -64,3 +64,64 @@ export type NBAAbbreviation =
   
     return total / 5
   }
+
+  // Add these helper functions
+function isToday(date: Date): boolean {
+  const today = new Date();
+  return date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+}
+
+function isYesterday(date: Date): boolean {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return date.getDate() === yesterday.getDate() &&
+    date.getMonth() === yesterday.getMonth() &&
+    date.getFullYear() === yesterday.getFullYear();
+}
+
+class Logger {
+  private prefix: string;
+  
+  constructor(prefix: string = '') {
+    this.prefix = prefix;
+  }
+
+  log(message: string, data?: any) {
+    const timestamp = new Date().toISOString();
+    if (data) {
+      console.log(`[${timestamp}] ${this.prefix}${message}`, data);
+    } else {
+      console.log(`[${timestamp}] ${this.prefix}${message}`);
+    }
+  }
+
+  error(message: string, error: any) {
+    const timestamp = new Date().toISOString();
+    console.error(`[${timestamp}] ${this.prefix}ERROR: ${message}`, error);
+  }
+}
+async function checkCacheExpiry(
+  createdAt: string,
+  logger: Logger
+): Promise<boolean> {
+  const created = new Date(createdAt);
+
+  // If the cache was created today, it's valid
+  if (isToday(created)) {
+    logger.log('Cache from today, still valid');
+    return false;
+  }
+
+  // If it's early morning (before 10 AM) and the cache is from yesterday, it's still valid
+  const currentHour = new Date().getHours();
+  if (currentHour < 10 && isYesterday(created)) {
+    logger.log('Cache from yesterday, still valid due to early morning');
+    return false;
+  }
+
+  // Cache is too old
+  logger.log('Cache expired');
+  return true;
+}
