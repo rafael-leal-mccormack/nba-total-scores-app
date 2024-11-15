@@ -1,30 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "../../../utils/supabase/server";
 import { Stats } from "../../page";
+import { Logger } from "../../../utils/logger/logger";
 
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-class Logger {
-  private prefix: string;
-  
-  constructor(prefix: string = '') {
-    this.prefix = prefix;
-  }
-
-  log(message: string, data?: any) {
-    const timestamp = new Date().toISOString();
-    if (data) {
-      console.log(`[${timestamp}] ${this.prefix}${message}`, data);
-    } else {
-      console.log(`[${timestamp}] ${this.prefix}${message}`);
-    }
-  }
-
-  error(message: string, error: any) {
-    const timestamp = new Date().toISOString();
-    console.error(`[${timestamp}] ${this.prefix}ERROR: ${message}`, error);
-  }
-}
 
 function normalizeTeamName(teamName: string): string {
   return teamName.split(" ")
